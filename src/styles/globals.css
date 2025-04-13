@@ -1,0 +1,152 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  /* Fondos claros */
+  --background: oklch(1 0 0); /* #FFFFFF */
+  --foreground: oklch(0.145 0 0); /* Color oscuro para texto */
+  --card: oklch(1 0 0); /* #FFFFFF */
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0); /* #FFFFFF */
+  --popover-foreground: oklch(0.145 0 0);
+  
+  /* Azul oscuro como color primario */
+  --primary: oklch(0.4 0.12 250); /* #26547C */
+  --primary-foreground: oklch(0.985 0 0); /* Texto claro sobre primario */
+  
+  /* Gris azulado como color secundario */
+  --secondary: oklch(0.85 0.03 240); /* #CBD5E1 */
+  --secondary-foreground: oklch(0.3 0.12 250); /* Color primario como texto */
+  
+  /* Azul claro para áreas neutras */
+  --muted: oklch(0.7 0.09 230); /* #82A6B6 */
+  --muted-foreground: oklch(0.3 0.05 240);
+  
+  /* Coral como color de acento (del código anterior) */
+  --accent: oklch(0.65 0.22 20); /* #F43F5E (color anterior) */
+  --accent-foreground: oklch(0.985 0 0);
+  
+  /* Amarillo como tertiary */
+  --tertiary: oklch(0.85 0.18 85); /* #FFC145 */
+  --tertiary-foreground: oklch(0.2 0 0);
+  
+  --destructive: oklch(0.577 0.245 27.325); /* Mantenemos el destructive original */
+  --border: oklch(0.85 0.03 240); /* #CBD5E1 - mismo que secondary */
+  --input: oklch(0.85 0.03 240); /* #CBD5E1 */
+  --ring: oklch(0.4 0.12 250); /* #26547C - mismo que primary */
+  
+  /* Colores para gráficos */
+  --chart-1: oklch(0.4 0.12 250); /* Azul oscuro #26547C */
+  --chart-2: oklch(0.65 0.22 20); /* Coral #F43F5E (accent) */
+  --chart-3: oklch(0.85 0.18 85); /* Amarillo #FFC145 */
+  --chart-4: oklch(0.7 0.09 230); /* Azul claro #82A6B6 */
+  --chart-5: oklch(0.85 0.03 240); /* Gris azulado #CBD5E1 */
+  
+  /* Sidebar */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.4 0.12 250); /* #26547C */
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.85 0.18 85); /* Amarillo #FFC145 para destacar */
+  --sidebar-accent-foreground: oklch(0.2 0 0);
+  --sidebar-border: oklch(0.85 0.03 240); /* #CBD5E1 */
+  --sidebar-ring: oklch(0.4 0.12 250); /* #26547C */
+}
+
+.dark {
+  --background: oklch(0.2 0.06 250); /* Versión oscura derivada del azul primario */
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.25 0.08 250); /* Un poco más claro que el fondo */
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.25 0.08 250);
+  --popover-foreground: oklch(0.985 0 0);
+  
+  /* Invertimos algunos colores en modo oscuro */
+  --primary: oklch(0.6 0.10 245); /* Versión más clara del azul #26547C */
+  --primary-foreground: oklch(0.1 0 0);
+  
+  --secondary: oklch(0.5 0.05 240); /* Versión oscura del gris azulado */
+  --secondary-foreground: oklch(0.985 0 0);
+  
+  --muted: oklch(0.4 0.06 230); /* Versión oscura del muted #82A6B6 */
+  --muted-foreground: oklch(0.75 0.05 240);
+  
+  /* Mantenemos el coral como accent */
+  --accent: oklch(0.65 0.22 20); /* #F43F5E (color anterior) */
+  --accent-foreground: oklch(0.985 0 0);
+  
+  --tertiary: oklch(0.8 0.15 85); /* Versión ligeramente más oscura del amarillo */
+  --tertiary-foreground: oklch(0.1 0 0);
+  
+  --destructive: oklch(0.704 0.191 22.216); /* Mantenemos el destructive original */
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 20%);
+  --ring: oklch(0.6 0.10 245); /* Versión más clara del azul */
+  
+  /* Colores para gráficos en modo oscuro */
+  --chart-1: oklch(0.6 0.10 245); /* Azul claro */
+  --chart-2: oklch(0.65 0.22 20); /* Coral #F43F5E */
+  --chart-3: oklch(0.8 0.15 85); /* Amarillo */
+  --chart-4: oklch(0.5 0.09 230); /* Azul muted */
+  --chart-5: oklch(0.7 0.05 240); /* Gris azulado claro */
+  
+  /* Sidebar en modo oscuro */
+  --sidebar: oklch(0.25 0.08 250);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.6 0.10 245); /* Versión más clara del azul */
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.8 0.15 85); /* Amarillo */
+  --sidebar-accent-foreground: oklch(0.1 0 0);
+  --sidebar-border: oklch(1 0 0 / 15%);
+  --sidebar-ring: oklch(0.5 0.08 245);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
