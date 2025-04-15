@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import Button from "@/components/ui/Button"
+import Input  from "@/components/ui/input"
+import Label from "@/components/ui/label"
 
-export const LoginForm = ({ className, ...props
+const LoginForm = ({ className, ...props
 }: React.ComponentProps<"form">) => {
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
@@ -57,3 +57,5 @@ export const LoginForm = ({ className, ...props
     </form>
   )
 }
+
+export default LoginForm;

@@ -34,7 +34,7 @@ const Dashboard = () => {
         <nav>
           <MenuItem to="/dashboard" label="Dashboard" />
           <MenuItem to="/dashboard/athletes" label="Atletas" />
-          <MenuItem to="/dashboard/sessions" label="Sesiones" />
+          <MenuItem to="/dashboard/session" label="Entrenamiento" />
           <MenuItem to="/dashboard/analytics" label="Análisis" />
           <MenuItem to="/dashboard/settings" label="Configuración" />
         </nav>
