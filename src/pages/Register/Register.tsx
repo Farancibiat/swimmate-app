@@ -1,5 +1,5 @@
 import { GalleryVerticalEnd } from "lucide-react";
-import RegisterForm from "./registerForm";
+import RegisterForm from "./RegisterForm";
 
 export const Register = () => {
   return (
