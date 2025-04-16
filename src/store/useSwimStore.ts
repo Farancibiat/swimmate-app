@@ -17,25 +17,26 @@ interface iSession  {
 interface iUser{
   id: string;
   role: 'admin' | 'swimmer' | "coach";
+  email:string;
   name: string;
   bearer: string | null;
 }
-type NullUser= iUser | null;
+
 
 interface AppState {
-  user: NullUser;
+  user: iUser | null,
   athletes: iAthlete[];
   sessions: iSession[];
-  setUser: (user: iUser) => void;
+  setUser: (user: iUser | null) => void;
+  
   setAthletes: (athletes:iAthlete[]) => void;
 }
 
 export const useSwimStore = create<AppState>((set) => ({
-  user:null,
+  user: null,
   athletes: [],
   sessions: [],
-  
-  setUser: (user) =>set({user}),
+  setUser: (user) => set({ user }),
   setAthletes: (athletes) => set({athletes}),
  
 }));

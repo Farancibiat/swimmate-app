@@ -1,28 +1,58 @@
 // components/TrainningSession.tsx
 import { useTimmer } from '@/hooks/useTimmer';
-import Button  from '@/components/ui/Button/index';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
-import { Save, RotateCcw } from 'lucide-react';
 import { formatTime } from '@/utils/format';
 import TimmerTable from '@/components/TimmerTable';
+import {
+  Play,
+  Pause,
+  Save,
+  Trash2,
+  Loader2,
+  Flag
+} from "lucide-react";
+import Button from '@/components/ui/Button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 
-export const TrainningSession=()=> {
-  const { 
-    nadadores, 
-    isRunning, 
-    iniciarCronometro, 
+export const TrainningSession = () => {
+  const {
+    nadadores,
+    isRunning,
+    isEnded,
+    terminarSession,
+    iniciarCronometro,
     agregarVuelta,
-    detenerCronometro, 
-    actualizarTiempo 
+    detenerCronometro,
+    actualizarTiempo
   } = useTimmer([
-    { id: '1', nombre: 'Ada La gimnasta Soto', laps: [] },
-    { id: '2', nombre: 'Felipe Arancibia', laps: [] },
+    { id: "1", name: "Alex", laps: [], total: 0, avg: 0 },
+    { id: "2", name: "Alicia", laps: [], total: 0, avg: 0 },
+    { id: "3", name: "Geo", laps: [], total: 0, avg: 0 },
+    { id: "4", name: "Matías", laps: [], total: 0, avg: 0 },
+    { id: "5", name: "Pehuén", laps: [], total: 0, avg: 0 },
+    { id: "6", name: "Gregorio Paltrinieri", laps: [], total: 0, avg: 0 },
+    { id: "7", name: "Sun Yang", laps: [], total: 0, avg: 0 },
+    { id: "8", name: "Mack Horton", laps: [], total: 0, avg: 0 }
   ]);
 
   const [tiempoActual, setTiempoActual] = useState(0);
-
+  const [showConfirmacion, setShowConfirmacion] = useState(false);
   useEffect(() => {
     if (!isRunning) return;
     return actualizarTiempo(setTiempoActual);
@@ -30,79 +60,143 @@ export const TrainningSession=()=> {
 
 
 
-  return (
-    <div className="p-4 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-center text-4xl font-mono">
-            {formatTime(tiempoActual)}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-center">
-          <Button 
-            onClick={iniciarCronometro} 
-            disabled={isRunning}
-            className="w-32"
-          >
-            {isRunning ? 'En progreso...' :tiempoActual==0? 'Iniciar':'Continuar'}
-          </Button>
-          <Button 
-            onClick={ detenerCronometro } 
-            variant='destructive'
-            disabled={!isRunning}
-            className="w-32 mx-2"
-          >
-            {'Pausar'}
-          </Button>
-          <Button 
-            onClick={ detenerCronometro } 
-            variant='default'
-            disabled={isRunning}
-            className="w-32 mx-2"
-          >
-            <Save className="w-auto text-blue-500" /> Grabar
-          </Button>
-          <Button 
-            onClick={ detenerCronometro } 
-            variant='destructive'
-            disabled={isRunning}
-            className="w-32 mx-2"
-          >
-            <RotateCcw className="w-auto text-blue-500" /> Descartar
-          </Button>
-        </CardContent>
-      </Card>
+  const handleDescartar = (): void => {
+    setShowConfirmacion(true)
+    console.log("testing ")
+  }
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <TimmerTable
-        swimmers={nadadores}
-        onLapRecorded={agregarVuelta}
-        />
-        {/* {nadadores.map((nadador) => (
-          <Card key={nadador.id}>
-            <CardHeader>
-              <CardTitle>{nadador.nombre}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+  const handleGrabar = ():void => {
+    console.log("testing ")
+  }
+
+  const handleTerminar=()=>{
+    terminarSession();
+    console.log('termina vuelta');
+
+  }
+
+  const handleGreenButton=()=>{
+    if(isEnded) handleGrabar();
+    else handleTerminar();
+  }
+
+
+  const resetearTodosLosDatos = () => {
+    
+    console.log('testing')
+  };
+
+
+
+  return (
+    <>
+      <div className="p-4 space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center text-4xl font-mono bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+              {formatTime(tiempoActual)}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-wrap justify-center gap-2">
+            {/* Grupo Principal */}
+            <div className="flex items-center space-x-2">
+              {/* Botón Inicio/Continuar */}
               <Button
-                variant="outline"
-                onClick={() => agregarVuelta(nadador.id)}
-                className="w-full"
+                onClick={iniciarCronometro}
+                disabled={isRunning}
+                className="w-32 h-12 shadow-md"
+                variant={tiempoActual === 0 ? "default" : "secondary"}
               >
-                Registrar Vuelta
-              </Button>
-              <div className="mt-2 space-y-1">
-                <p className="text-sm font-medium">Vueltas: {nadador.laps.length}</p>
-                {nadador.laps.length > 0 && (
-                  <div className="text-xs text-muted-foreground">
-                    Última: {formatTime(nadador.laps.slice(-1)[0])}
-                  </div>
+                {isRunning ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Play className="mr-2 h-4 w-4" />
                 )}
-              </div>
-            </CardContent>
-          </Card>
-        ))} */}
+                {isRunning ? 'En progreso' : tiempoActual === 0 ? 'Iniciar' : 'Continuar'}
+              </Button>
+
+              {/* Botón Pausar */}
+              <Button
+                onClick={detenerCronometro}
+                variant="destructive"
+                disabled={!isRunning}
+                className="w-32 h-12 shadow-md"
+              >
+                <Pause className="mr-2 h-4 w-4" />
+                Pausar
+              </Button>
+            </div>
+
+            {/* Grupo Secundario */}
+            <div className="flex items-center space-x-2">
+              {/* Botón Grabar */}
+              <Button
+                onClick={handleGreenButton}
+                variant="outline"
+                disabled={tiempoActual === 0}
+                className="w-32 h-12 border-green-500 text-green-600 hover:bg-green-50"
+              >
+               {isEnded && !isRunning?
+               <>
+                <Save className="mr-2 h-4 w-4" />
+                Grabar
+               </> :<>
+                <Flag className="mr-2 h-4 w-4" />
+                Terminar
+               </>
+               }
+              </Button>
+
+              {/* Botón Descartar */}
+              <Button
+                onClick={handleDescartar}
+                variant="outline"
+                disabled={isRunning || tiempoActual === 0}
+                className="w-32 h-12 border-red-500 text-red-600 hover:bg-red-50"
+              >
+                 <Trash2 className="mr-2 h-4 w-4" />
+                Descartar
+              </Button>
+
+          
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1">
+          <TimmerTable
+            swimmers={nadadores}
+            onLapRecorded={agregarVuelta}
+          />
+        </div>
       </div>
-    </div>
+      <AlertDialog open={showConfirmacion} onOpenChange={setShowConfirmacion}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Confirmar descarte?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción eliminará todos los tiempos registrados y no se puede deshacer.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                resetearTodosLosDatos();
+                setShowConfirmacion(false);
+              }}
+              className="bg-accent  hover:bg-red-700"
+            >
+              Confirmar Descarte
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      {/* {showFeedback && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">
+          Tiempos guardados correctamente!
+        </div>
+      )} */}
+    </>
   );
 }

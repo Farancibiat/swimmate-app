@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {Home} from '@/pages/Home';
 import Dashboard from '@/layouts/Dashboard';
-import { Register } from '@/pages/Register';
+import { Register } from '@/pages/Register/Register';
 import { Login } from '@/pages/Login';
 
 export const MainRoutes=()=> {
