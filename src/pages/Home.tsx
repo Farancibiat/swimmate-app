@@ -31,7 +31,7 @@ export const Home = () => {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
-          <a href="/dashboard" className="hover:text-accent font-medium">Dashboard</a>
+          <a href="/app" className="hover:text-accent font-medium">Dashboard</a>
             <a href="#features" className="hover:text-accent font-medium">Features</a>
             <a href="#pricing" className="hover:text-accent font-medium">Pricing</a>
             <a href="/login" className="hover:text-accent font-medium">Login</a>

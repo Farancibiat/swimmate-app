@@ -1,5 +1,5 @@
-// components/TrainningSession.tsx
-import { useTimmer } from '@/hooks/useTimmer';
+
+import { useTimmer } from '@/pages/TrainingSession/hooks/useTimmer';
 import { useEffect, useState } from 'react';
 import { formatTime } from '@/utils/format';
 import TimmerTable from '@/components/TimmerTable';
@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 
-export const TrainningSession = () => {
+export const TimerView = () => {
   const {
     nadadores,
     isRunning,

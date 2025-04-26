@@ -21,7 +21,7 @@ export const Register = () => {
       </div>
       <div className="relative hidden bg-muted lg:block">
         <img
-          src="/placeholder.svg"
+          src="https://media.cnn.com/api/v1/images/stellar/prod/cnne-1727463-piscina-olimpica-gettyimages-2158350134.jpg?c=16x9&q=h_833,w_1480,c_fill"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />

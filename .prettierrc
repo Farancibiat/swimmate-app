@@ -1,0 +1,15 @@
+{
+  "printWidth": 120,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "endOfLine": "lf",
+  "objectCurlyNewline": {
+    "multiline": true,
+    "consistent": true,
+    "minProperties": 3
+  }
+}

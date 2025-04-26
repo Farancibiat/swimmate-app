@@ -1,7 +1,9 @@
 
+// import { useSwimStore } from '@/store/useSwimStore';
 import { useState, useCallback, useRef } from 'react';
 
 export const useTimmer = (nadadoresIniciales: { id: string; name: string, laps: number[], total: number, avg: number }[]) => {
+  // const {swimmers}=useSwimStore();
   const [nadadores, setNadadores] = useState(
     nadadoresIniciales.map(n => ({ ...n, laps: [...n.laps] as number[] }))
   );

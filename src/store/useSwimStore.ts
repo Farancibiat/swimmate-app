@@ -1,42 +1,31 @@
+import { DEFAULT_TRAINING_SESSION_CONFIG } from '@/constants/swimming';
+import { TrainingSessionConfig } from '@/pages/TrainingSession/types';
+import { User } from '@/types';
 import { create } from 'zustand';
 
-interface iAthlete {
-  id: string;
-  name: string;
-  age: number;
-  level: string;
-};
-
-interface iSession  {
-  id: string;
-  title: string;
-  date: string;
-  athleteIds: string[];
-};
-
-interface iUser{
-  id: string;
-  role: 'admin' | 'swimmer' | "coach";
-  email:string;
-  name: string;
-  bearer: string | null;
-}
 
 
 interface AppState {
-  user: iUser | null,
-  athletes: iAthlete[];
-  sessions: iSession[];
-  setUser: (user: iUser | null) => void;
-  
-  setAthletes: (athletes:iAthlete[]) => void;
+  //Global
+  user: User | null,
+  setUser: (user: User | null) => void;
+
+  //Training Session
+  TrainingSessionConfig: TrainingSessionConfig | null,
+  setTrainingSessionConfig: (TrainingSessionConfig: TrainingSessionConfig | null) => void;
+  step: 'config' | 'swimmers' | 'timer';
+  setStep: (step: 'config' | 'swimmers' | 'timer') => void;
 }
 
 export const useSwimStore = create<AppState>((set) => ({
+  //Global
   user: null,
-  athletes: [],
-  sessions: [],
   setUser: (user) => set({ user }),
-  setAthletes: (athletes) => set({athletes}),
- 
+  
+  //Training Session
+  step: 'config',
+  setStep: (step) => set({step}),
+  TrainingSessionConfig: DEFAULT_TRAINING_SESSION_CONFIG,
+  setTrainingSessionConfig: (TrainingSessionConfig) => set({TrainingSessionConfig}),
+
 }));
