@@ -1,23 +1,10 @@
-
-import { useTimmer } from '@/pages/TrainingSession/hooks/useTimmer';
+import { useTimer } from '@/pages/TrainingSession/hooks/useTimer';
 import { useEffect, useState } from 'react';
 import { formatTime } from '@/utils/format';
-import TimmerTable from '@/components/TimmerTable';
-import {
-  Play,
-  Pause,
-  Save,
-  Trash2,
-  Loader2,
-  Flag
-} from "lucide-react";
+import TimerTable from '@/components/TimerTable';
+import { Play, Pause, Save, Trash2, Loader2, Flag } from 'lucide-react';
 import Button from '@/components/ui/Button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,8 +14,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-
+} from '@/components/ui/alert-dialog';
+import { useSwimStore } from '@/store/useSwimStore';
+import { TrainingSessionStep } from '@/pages/TrainingSession/hooks/useTrainingSession';
 
 export const TimerView = () => {
   const {
@@ -39,54 +27,46 @@ export const TimerView = () => {
     iniciarCronometro,
     agregarVuelta,
     detenerCronometro,
-    actualizarTiempo
-  } = useTimmer([
-    { id: "1", name: "Alex", laps: [], total: 0, avg: 0 },
-    { id: "2", name: "Alicia", laps: [], total: 0, avg: 0 },
-    { id: "3", name: "Geo", laps: [], total: 0, avg: 0 },
-    { id: "4", name: "Matías", laps: [], total: 0, avg: 0 },
-    { id: "5", name: "Pehuén", laps: [], total: 0, avg: 0 },
-    { id: "6", name: "Gregorio Paltrinieri", laps: [], total: 0, avg: 0 },
-    { id: "7", name: "Sun Yang", laps: [], total: 0, avg: 0 },
-    { id: "8", name: "Mack Horton", laps: [], total: 0, avg: 0 }
-  ]);
+    actualizarTiempo,
+    sessionState,
+  } = useTimer();
+
+  // Acceder al store global para poder resetear y navegar
+  const { setSessionState, setStep } = useSwimStore();
 
   const [tiempoActual, setTiempoActual] = useState(0);
   const [showConfirmacion, setShowConfirmacion] = useState(false);
+
   useEffect(() => {
     if (!isRunning) return;
     return actualizarTiempo(setTiempoActual);
-  }, [isRunning, actualizarTiempo, detenerCronometro]);
-
-
+  }, [isRunning, actualizarTiempo]);
 
   const handleDescartar = (): void => {
-    setShowConfirmacion(true)
-    console.log("testing ")
-  }
-
-  const handleGrabar = ():void => {
-    console.log("testing ")
-  }
-
-  const handleTerminar=()=>{
-    terminarSession();
-    console.log('termina vuelta');
-
-  }
-
-  const handleGreenButton=()=>{
-    if(isEnded) handleGrabar();
-    else handleTerminar();
-  }
-
-
-  const resetearTodosLosDatos = () => {
-    
-    console.log('testing')
+    setShowConfirmacion(true);
   };
 
+  const handleGrabar = (): void => {
+    // Lógica para guardar los datos
+  };
 
+  const handleTerminar = () => {
+    terminarSession();
+  };
+
+  const handleGreenButton = () => {
+    if (isEnded) handleGrabar();
+    else handleTerminar();
+  };
+
+  const resetearTodosLosDatos = () => {
+    if (isRunning) {
+      detenerCronometro();
+    }
+    setTiempoActual(0);
+    setSessionState(null);
+    setStep(TrainingSessionStep.CONFIG);
+  };
 
   return (
     <>
@@ -105,13 +85,9 @@ export const TimerView = () => {
                 onClick={iniciarCronometro}
                 disabled={isRunning}
                 className="w-32 h-12 shadow-md"
-                variant={tiempoActual === 0 ? "default" : "secondary"}
+                variant={tiempoActual === 0 ? 'default' : 'secondary'}
               >
-                {isRunning ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Play className="mr-2 h-4 w-4" />
-                )}
+                {isRunning ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Play className="mr-2 h-4 w-4" />}
                 {isRunning ? 'En progreso' : tiempoActual === 0 ? 'Iniciar' : 'Continuar'}
               </Button>
 
@@ -136,15 +112,17 @@ export const TimerView = () => {
                 disabled={tiempoActual === 0}
                 className="w-32 h-12 border-green-500 text-green-600 hover:bg-green-50"
               >
-               {isEnded && !isRunning?
-               <>
-                <Save className="mr-2 h-4 w-4" />
-                Grabar
-               </> :<>
-                <Flag className="mr-2 h-4 w-4" />
-                Terminar
-               </>
-               }
+                {isEnded && !isRunning ? (
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    Grabar
+                  </>
+                ) : (
+                  <>
+                    <Flag className="mr-2 h-4 w-4" />
+                    Terminar
+                  </>
+                )}
               </Button>
 
               {/* Botón Descartar */}
@@ -154,28 +132,30 @@ export const TimerView = () => {
                 disabled={isRunning || tiempoActual === 0}
                 className="w-32 h-12 border-red-500 text-red-600 hover:bg-red-50"
               >
-                 <Trash2 className="mr-2 h-4 w-4" />
+                <Trash2 className="mr-2 h-4 w-4" />
                 Descartar
               </Button>
-
-          
             </div>
           </CardContent>
         </Card>
 
         <div className="grid grid-cols-1">
-          <TimmerTable
+          <TimerTable
             swimmers={nadadores}
             onLapRecorded={agregarVuelta}
+            currentTime={tiempoActual}
+            sessionState={sessionState}
           />
         </div>
       </div>
+
       <AlertDialog open={showConfirmacion} onOpenChange={setShowConfirmacion}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>¿Confirmar descarte?</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción eliminará todos los tiempos registrados y no se puede deshacer.
+              Esta acción eliminará todos los tiempos registrados y te devolverá al inicio del entrenamiento. Esta
+              acción no se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -185,18 +165,13 @@ export const TimerView = () => {
                 resetearTodosLosDatos();
                 setShowConfirmacion(false);
               }}
-              className="bg-accent  hover:bg-red-700"
+              className="bg-red-500 hover:bg-red-700 text-white"
             >
               Confirmar Descarte
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      {/* {showFeedback && (
-        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">
-          Tiempos guardados correctamente!
-        </div>
-      )} */}
     </>
   );
-}
+};

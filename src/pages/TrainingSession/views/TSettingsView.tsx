@@ -17,13 +17,8 @@ import {
 } from '@/constants/swimming';
 import { useTrainingSession } from '../hooks/useTrainingSession';
 
-const ConfigView: React.FC = () => {
-  const { TrainingSessionConfig, setTrainingSessionConfig, handleConfigComplete } = useTrainingSession();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleConfigComplete();
-  };
+const TSettingsView: React.FC = () => {
+  const { TrainingSessionConfig, setTrainingSessionConfig, handleConfigSubmit } = useTrainingSession();
 
   return (
     <div className="container max-w-4xl mx-auto">
@@ -37,7 +32,7 @@ const ConfigView: React.FC = () => {
       <div className="grid gap-6">
         <Card className="border">
           <CardContent className="pt-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleConfigSubmit} className="space-y-6">
               {/* Primera línea: Disciplina */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="space-y-2 col-span-full">
@@ -258,4 +253,4 @@ const ConfigView: React.FC = () => {
   );
 };
 
-export default ConfigView;
+export default TSettingsView;

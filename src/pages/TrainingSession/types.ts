@@ -14,6 +14,7 @@ export interface TrainingSessionConfig {
 
 export interface SwimmerTraining extends Swimmer {
   laps: number[];
+  tiemposAcumulados: number[];
   total: number;
   avg: number;
 }
@@ -23,4 +24,6 @@ export interface TrainingSessionState {
   startTime?: number;
   isRunning: boolean;
   isEnded: boolean;
+  pausedAtTime?: number;
+  sessionConfig?: TrainingSessionConfig;
 }

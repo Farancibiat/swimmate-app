@@ -1,44 +1,85 @@
-import { useState } from "react";
-import { TrainingSessionState, SwimmerTraining } from "../types";
-import { useSwimStore } from "@/store/useSwimStore";
+import { useSwimStore } from '@/store/useSwimStore';
+import { SwimmerTraining } from '../types';
+import { useState } from 'react';
+
+export enum TrainingSessionStep {
+  CONFIG = 'config',
+  SWIMMERS = 'swimmers',
+  TIMER = 'timer',
+}
 
 export const useTrainingSession = () => {
-  const [sessionState, setSessionState] = useState<TrainingSessionState | null>(null);
-  const {
- step, TrainingSessionConfig, setStep, setTrainingSessionConfig } = useSwimStore();
+  // Usar el estado global en lugar de local
+  const { step, setStep, TrainingSessionConfig, setTrainingSessionConfig, sessionState, setSessionState } =
+    useSwimStore();
 
-  const handleConfigComplete = () => {
-    setStep("swimmers");
+  // Navegación entre pasos
+  const goToStep = (newStep: TrainingSessionStep) => {
+    setStep(newStep);
   };
 
-  const handleSwimmersComplete = (swimmers: SwimmerTraining[]) => {
+  const goBack = () => {
+    if (step === TrainingSessionStep.CONFIG || sessionState?.isRunning) {
+      return;
+    }
+    switch (step) {
+      case TrainingSessionStep.SWIMMERS:
+        goToStep(TrainingSessionStep.CONFIG);
+        break;
+      case TrainingSessionStep.TIMER:
+        goToStep(TrainingSessionStep.SWIMMERS);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Manejadores específicos para cada paso
+  const handleConfigSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!TrainingSessionConfig) {
       return;
     }
-
-    setSessionState({
- swimmers, isRunning: false, isEnded: false 
-});
-    setStep("timer");
+    goToStep(TrainingSessionStep.SWIMMERS);
   };
-  const handleBack = () => {
-    switch (step) {
-      case "swimmers":
-        setStep("config");
-        break;
-      case "timer":
-        setStep("swimmers");
-        break;
-    }
+
+  const handleSwimmersSubmit = (swimmers: SwimmerTraining[]) => {
+    console.log('handleSwimmersSubmit - swimmers recibidos:', swimmers);
+
+    // Usar el setter del store global
+    setSessionState({
+      swimmers,
+      isRunning: false,
+      isEnded: false,
+      sessionConfig: TrainingSessionConfig || undefined,
+    });
+
+    console.log('handleSwimmersSubmit - sessionState actualizado:', {
+      swimmers,
+      isRunning: false,
+      isEnded: false,
+      sessionConfig: TrainingSessionConfig,
+    });
+
+    goToStep(TrainingSessionStep.TIMER);
   };
 
   return {
+    // Estado actual
     step,
     TrainingSessionConfig,
     sessionState,
+
+    // Setters
     setTrainingSessionConfig,
-    handleConfigComplete,
-    handleSwimmersComplete,
-    handleBack,
+    setSessionState,
+
+    // Navegación
+    goToStep,
+    goBack,
+
+    // Handlers específicos
+    handleConfigSubmit,
+    handleSwimmersSubmit,
   };
 };

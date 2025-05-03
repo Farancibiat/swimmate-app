@@ -49,4 +49,4 @@ export interface SessionResponse {
   events: LapEvent[];
   createdAt: string;
   updatedAt: string;
-} 
+}

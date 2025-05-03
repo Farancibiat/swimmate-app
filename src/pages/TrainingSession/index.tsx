@@ -1,10 +1,11 @@
-import ConfigView from './views/ConfigView';
+import ConfigView from './views/TSettingsView';
 import SwimmersView from './views/SwimmersView';
 import { TimerView } from './views/TimerView';
-import { useSwimStore } from '@/store/useSwimStore';
+import { useTrainingSession } from './hooks/useTrainingSession';
 
 export const TrainingSession = () => {
-  const { step } = useSwimStore();
+  const { step } = useTrainingSession();
+
   const stepComponents = {
     config: <ConfigView />,
     swimmers: <SwimmersView />,
@@ -13,7 +14,7 @@ export const TrainingSession = () => {
 
   return (
     <div className="container mx-auto px-4 ">
-      <div className="mt-6">{stepComponents[step] || <div>No se encontró el paso</div>}</div>
+      <div className="mt-6">{stepComponents[step]}</div>
     </div>
   );
 };
